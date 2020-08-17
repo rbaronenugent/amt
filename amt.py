@@ -42,10 +42,10 @@ def amt_tax_burden(shares_exercised, fmv, strike_price, income, deduction):
     """
 
     exercise_income = shares_exercised * (fmv - strike_price)
-    amt_income = exercise_income + income - amt_tax_exemption - deduction
+    amt_income = exercise_income + income - amt_tax_exemption
 
     amt_brackets_high = amt_brackets_low[1:] + [inf]
-    amt_income_in_each_bracket = [max(min(high, amt_income - deduction) - low, 0) for low, high in zip(amt_brackets_low, amt_brackets_high)]
+    amt_income_in_each_bracket = [max(min(high, amt_income) - low, 0) for low, high in zip(amt_brackets_low, amt_brackets_high)]
     amt_tax_burden = sum([amount * tax_rate for amount, tax_rate in zip(amt_tax_rates, amt_income_in_each_bracket)])
 
     return amt_tax_burden
